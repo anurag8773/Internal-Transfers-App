@@ -10,8 +10,8 @@ import (
 )
 
 type createAccountRequest struct {
-	AccountID      int64   `json:"account_id"`
-	InitialBalance float64 `json:"initial_balance,string"`
+	AccountID      *int64   `json:"account_id"`
+	InitialBalance *float64 `json:"initial_balance,string"`
 }
 
 // CreateAccount handles the creation of a new account.
@@ -23,12 +23,22 @@ func CreateAccount(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	if req.InitialBalance < 0 {
+	if req.AccountID == nil {
+		http.Error(w, "account_id is required and must be non-zero", http.StatusBadRequest)
+		return
+	}
+
+	if req.InitialBalance == nil {
+		http.Error(w, "initial_balance is required", http.StatusBadRequest)
+		return
+	}
+
+	if *req.InitialBalance < 0 {
 		http.Error(w, "initial balance cannot be negative", http.StatusBadRequest)
 		return
 	}
 
-	if err := model.CreateAccount(req.AccountID, req.InitialBalance); err != nil {
+	if err := model.CreateAccount(*req.AccountID, *req.InitialBalance); err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}

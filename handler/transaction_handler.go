@@ -7,8 +7,8 @@ import (
 )
 
 type transactionRequest struct {
-	SourceAccountID      int64   `json:"source_account_id"`
-	DestinationAccountID int64   `json:"destination_account_id"`
+	SourceAccountID      *int64   `json:"source_account_id"`
+	DestinationAccountID *int64   `json:"destination_account_id"`
 	Amount               float64 `json:"amount,string"`
 }
 
@@ -20,8 +20,18 @@ func SubmitTransaction(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "invalid request body", http.StatusBadRequest)
 		return
 	}
+
+	if req.SourceAccountID == nil {
+		http.Error(w, "Source Account ID is required", http.StatusBadRequest)
+		return
+	}
+
+	if req.DestinationAccountID == nil {
+		http.Error(w, "Destination Account ID is required", http.StatusBadRequest)
+		return
+	}
 	// Check if the source and destination accounts exist
-	if req.SourceAccountID <= 0 || req.DestinationAccountID <= 0 {
+	if *req.SourceAccountID <= 0 || *req.DestinationAccountID <= 0 {
 		http.Error(w, "account IDs must be greater than zero", http.StatusBadRequest)
 		return
 	}
@@ -38,7 +48,7 @@ func SubmitTransaction(w http.ResponseWriter, r *http.Request) {
 	}
 	// Submit the transaction
 	// This will lock the source account, check if it has sufficient funds,
-	if err := model.SubmitTransaction(req.SourceAccountID, req.DestinationAccountID, req.Amount); err != nil {
+	if err := model.SubmitTransaction(*req.SourceAccountID, *req.DestinationAccountID, req.Amount); err != nil {
 		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
 	}
