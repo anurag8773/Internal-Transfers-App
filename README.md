@@ -12,13 +12,13 @@ The entire setup is containerized using **Docker + Docker Compose** for easy dep
 
 ##  Features
 
-✅ Create an account with a specific ID and initial balance  
-✅ Query account balance by account ID  
-✅ Submit transactions between accounts (source ➡ destination)  
-✅ Data persistence with PostgreSQL  
-✅ Clean, modular Go code following clean code principles  
-✅ Dockerized for easy setup  
-✅ Example Postman API requests  
+- Create an account with a specific ID and initial balance  
+- Query account balance by account ID  
+- Submit transactions between accounts (source ➡ destination)  
+- Data persistence with PostgreSQL  
+- Clean, modular Go code following clean code principles  
+- Dockerized for easy setup  
+- Example Postman API requests  
 
 ---
 
@@ -136,7 +136,7 @@ Request body:
 ##  Example Postman Usage
 
  Import this collection:
- [Postman Collection Link](#)
+ [Postman Collection Link](https://documenter.getpostman.com/view/37271849/2sB34bL3VY)
 
 ---
 
@@ -162,15 +162,6 @@ APP_PORT=8080
 * Default DB credentials are safe for **local development only**
 * Use `docker-compose logs` to debug container logs
 * Use `docker-compose down -v` to tear down containers and volumes
-
----
-
-##  Future Enhancements (Optional Ideas)
-
-✅ Add authentication / authorization
-✅ Improve input validation
-✅ Add transaction rollback / ACID guarantees via DB transactions
-✅ Add unit + integration tests
 
 ---
 
